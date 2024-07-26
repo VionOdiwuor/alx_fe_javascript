@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     quoteDisplay.textContent = `"${quote.text}" - "${quote.category}"`;
   }
   //function to add a new quote
+  
   function addQuote() {
     const newQuoteText = document.getElementById("newQuoteText").innerHTML;
     const newQuoteCategory = document.getElementById("newQuoteCategory").innerHTML;
@@ -30,8 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       alert("Please fill in all the fields");
     }
-
-  }
+ }
+ function createAddQuoteForm() {
+    const form = document.getElementById("quoteForm").innerHTML;
+  };
   document.getElementById("newQuote").addEventListener("click", addQuote);
   showRandomQuote();
   // function for displaying added quotes
