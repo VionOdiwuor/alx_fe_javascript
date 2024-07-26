@@ -17,8 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const storedQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
     //function to display a random quote
     function showRandomQuote() {
+      const allQuotes= [...quotes, ...storedQuotes]//include stored quotes
       const randomIndex = Math.floor(Math.random() * quotes.length);
-      const quote = quotes[randomIndex];
+      const quote = allQuotes[randomIndex];
       const quoteDisplay = document.getElementById("quoteDisplay");
       quoteDisplay.textContent = `"${quote.text}" - "${quote.category}"`;
     };
@@ -42,10 +43,10 @@ document.addEventListener("DOMContentLoaded", function () {
    
    function createAddQuoteForm() {
       const form = document.createElement("Form");
-      form.innerHTML = "";
+     
+      document.body.appendChild(form);// to append the form to the body
     };
    function displayQuotes() {
-      quoteForm.innerHTML = " ";
       storedQuotes.forEach((QuoteObj, index) => {
         const newQuote = document.createElement("li");
         quoteForm.appendChild(newQuote);
@@ -54,7 +55,22 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("newQuote").addEventListener("click", showRandomQuote);
     //functon for initial display of quotes
     showRandomQuote();
-    addEventListener("click", addQuote);
-
+    document.getElementById("addQuote").addEventListener("click", addQuote);
+    createAddQuoteForm();
+    //display initial quotes
+    showRandomQuote();
+    
+    
+    
+    function importFromJsonFile(event) {
+        const fileReader = new FileReader();
+        fileReader.onload = function(event) {
+          const importedQuotes = JSON.parse(event.target.result);
+          quotes.push(...importedQuotes);
+          saveQuotes();
+          alert('Quotes imported successfully!');
+        };
+        fileReader.readAsText(event.target.files[0]);
+      }
     
   });
