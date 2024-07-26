@@ -59,7 +59,30 @@ document.addEventListener("DOMContentLoaded", function () {
     createAddQuoteForm();
     //display initial quotes
     showRandomQuote();
-    
+    // Assume you have an array of quotes (storedQuotes) from local storage
+
+// Function to export quotes to a JSON file
+function exportQuotes() {
+    const jsonStr = JSON.stringify(storedQuotes);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+  
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "quotes.json"; // Set the desired file name
+  
+    // Trigger the download
+    link.click();
+  
+    // Clean up by revoking the object URL
+    URL.revokeObjectURL(url);
+  }
+  
+  // Example usage: Call exportQuotes() when the user clicks a button
+  // For example, add an event listener to a button with id "exportButton"
+  document.getElementById("exportButton").addEventListener("click", exportQuotes);
+  
     
     
     function importFromJsonFile(event) {
