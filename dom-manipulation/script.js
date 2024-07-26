@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function addQuote() {
     const newQuoteText = document.getElementById("newQuoteText").innerHTML;
     const newQuoteCategory = document.getElementById("newQuoteCategory").innerHTML;
+    
     if (newQuoteText && newQuoteCategory) {
       quotes.push({ text: newQuoteText, category: newQuoteCategory });
       showRandomQuote(); //TO display newly added quotes
@@ -35,7 +36,17 @@ document.addEventListener("DOMContentLoaded", function () {
  function createAddQuoteForm() {
     const form = document.getElementById("quoteForm").innerHTML;
   };
+ function displayQuotes() {
+    quoteForm.innerHTML = " ";
+    storedQuotes.forEach((QuoteObj, index) => {
+      const newQuote = document.createElement("li");
+      quoteForm.appendChild(newQuote);
+    });
+ function createAddQuoteForm() {
+    const form = document.getElementById("quoteForm").innerHTML;
+  };
   document.getElementById("newQuote").addEventListener("click", addQuote);
   showRandomQuote();
   // function for displaying added quotes
+ }
 });
