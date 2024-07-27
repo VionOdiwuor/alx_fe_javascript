@@ -46,6 +46,59 @@ document.addEventListener("DOMContentLoaded", function () {
      
       document.body.appendChild(form);// to append the form to the body
     };
+    //function to updateCategoriesDropdown
+    function updateCategoriesDropdown(){
+      const dropdown = documents.getElementById("categoryFilter");
+      const allQuotes = [...quotes, ...storedQuotes];
+      const categories = new Set(allQuotes.map(quote => quote.category));
+      // clear existing options
+      dropdown.innerHTML = "";
+      //add default option
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "all";
+      defaultOption.textContent = "All Categories";
+      dropdown.appendChild(defaultOption);
+
+ // Add new categories
+ categories.forEach(category => {
+  const option = document.createElement("option");
+  option.value = category;
+  option.textContent = category;
+  dropdown.appendChild(option);
+
+
+
+    });
+  // Restore last selected category
+  const lastCategory = localStorage.getItem("lastCategory") || "all";
+  dropdown.value = lastCategory;
+  filterQuotes(lastCategory);
+}
+
+// Function to filter quotes based on selected category
+function filterQuotes(category) {
+  const filteredQuotes = (category === "all")
+      ? [...quotes, ...storedQuotes]
+      : [...quotes, ...storedQuotes].filter(q => q.category === category);
+
+  const quoteList = document.getElementById("quoteList");
+  quoteList.innerHTML = "";
+  
+  filteredQuotes.forEach(quote => {
+      const listItem = document.createElement("li");
+      listItem.textContent = `"${quote.text}" - ${quote.category}`;
+      quoteList.appendChild(listItem);
+  });
+}
+
+// Function to handle category dropdown change
+function onCategoryChange(event) {
+  const selectedCategory = event.target.value;
+  localStorage.setItem("lastCategory", selectedCategory);
+  filterQuotes(selectedCategory);
+}
+
+
    function displayQuotes() {
       storedQuotes.forEach((QuoteObj, index) => {
         const newQuote = document.createElement("li");
