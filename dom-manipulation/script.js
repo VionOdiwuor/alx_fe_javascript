@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.appendChild(form);// to append the form to the body
     };
     //function to updateCategoriesDropdown
-    function updateCategoriesDropdown(){
+    function populateCategories(){
       const dropdown = documents.getElementById("categoryFilter");
       const allQuotes = [...quotes, ...storedQuotes];
       const categories = new Set(allQuotes.map(quote => quote.category));
