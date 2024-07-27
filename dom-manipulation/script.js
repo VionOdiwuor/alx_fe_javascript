@@ -27,7 +27,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const quoteDisplay = document.getElementById("quoteDisplay");
       quoteDisplay.textContent = `"${quote.text}" - "${quote.category}"`;
     };
-   
+    // Function to show notifications
+    function showNotification(message) {
+      const notification = document.getElementById("notification");
+      notification.textContent = message;
+      notification.style.display = "block";
+      setTimeout(() => {
+          notification.style.display = "none";
+      }, 3000); // Hide notification after 3 seconds
+  }
+
     async function fetchQuotesFromServer() {
       try {
           const response = await fetch(SERVER_URL);
