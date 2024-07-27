@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
       quoteDisplay.textContent = `"${quote.text}" - "${quote.category}"`;
     };
    
-    async function fetchFromServer() {
+    async function fetchQuotesFromServer() {
       try {
           const response = await fetch(SERVER_URL);
           const data = await response.json();
