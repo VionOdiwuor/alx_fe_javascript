@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       localStorage.setItem("quotes", JSON.stringify(serverQuotes));
       showRandomQuote();
-      
+      showNotification('Quotes synced with server!');
   }
  // Function to post data to the server
  async function postToServer(newQuote) {
@@ -208,7 +208,18 @@ function exportQuotes() {
       displayQuotes();
 
 
-
+// Create a notification element
+const notification = document.createElement("div");
+notification.id = "notification";
+notification.style.position = "fixed";
+notification.style.bottom = "10px";
+notification.style.right = "10px";
+notification.style.backgroundColor = "#4caf50";
+notification.style.color = "white";
+notification.style.padding = "10px";
+notification.style.borderRadius = "5px";
+notification.style.display = "none"; // Hidden by default
+document.body.appendChild(notification);
 
 
   });
