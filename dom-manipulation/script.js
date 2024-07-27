@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
    
      // Function to fetch data from the server
-     function fetchFromServer() {
+     function fetchQuotesFromServer() {
       fetch(SERVER_URL)
           .then(response => response.json())
           .then(data => {
