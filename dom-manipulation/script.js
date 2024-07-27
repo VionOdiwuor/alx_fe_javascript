@@ -13,6 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
         category: "inspiration",
       },
     ];
+    const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; // Simulated server URL
+
+
+
     //function to retrieve existing quotes or initialize empty array
     const storedQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
     //function to display a random quote
@@ -23,6 +27,35 @@ document.addEventListener("DOMContentLoaded", function () {
       const quoteDisplay = document.getElementById("quoteDisplay");
       quoteDisplay.textContent = `"${quote.text}" - "${quote.category}"`;
     };
+   
+     // Function to fetch data from the server
+     function fetchFromServer() {
+      fetch(SERVER_URL)
+          .then(response => response.json())
+          .then(data => {
+              const serverQuotes = data.map(post => ({ text: post.title, category: "inspiration" })); // Example transformation
+              syncQuotes(serverQuotes);
+          })
+          .catch(error => console.error('Error fetching data from server:', error));
+  }
+
+  // Function to sync local quotes with server quotes
+  function syncQuotes(serverQuotes) {
+      // Conflict resolution: Server data takes precedence
+      storedQuotes.forEach(storedQuote => {
+          if (!serverQuotes.some(serverQuote => serverQuote.text === storedQuote.text)) {
+              serverQuotes.push(storedQuote);
+          }
+      });
+
+      localStorage.setItem("quotes", JSON.stringify(serverQuotes));
+      showRandomQuote();
+  }
+
+  // Periodically fetch data from the server
+  setInterval(fetchFromServer, 60000); // Fetch every 60 seconds
+   
+
     //function to add a new quote
     
  function addQuote() {
@@ -105,13 +138,7 @@ function onCategoryChange(event) {
         quoteForm.appendChild(newQuote);
       });
     }
-    document.getElementById("newQuote").addEventListener("click", showRandomQuote);
-    //functon for initial display of quotes
-    showRandomQuote();
-    document.getElementById("addQuote").addEventListener("click", addQuote);
-    createAddQuoteForm();
-    //display initial quotes
-    showRandomQuote();
+    
     // Assume you have an array of quotes (storedQuotes) from local storage
 
 // Function to export quotes to a JSON file
@@ -148,5 +175,18 @@ function exportQuotes() {
         };
         fileReader.readAsText(event.target.files[0]);
       }
-    
+      //event listeners
+      document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+      //functon for initial display of quotes
+      showRandomQuote();
+      document.getElementById("addQuote").addEventListener("click", addQuote);
+      createAddQuoteForm();
+      populateCategories();
+      document.getElementById("categoryFilter").addEventListener("change", onCategoryChange);
+      displayQuotes();
+
+
+
+
+
   });
