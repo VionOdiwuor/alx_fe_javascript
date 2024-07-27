@@ -50,7 +50,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
       localStorage.setItem("quotes", JSON.stringify(serverQuotes));
       showRandomQuote();
+      
   }
+ // Function to post data to the server
+ async function postToServer(newQuote) {
+  try {
+      const response = await fetch(SERVER_URL, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newQuote)
+      });
+
+      if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Data posted successfully:', data);
+  } catch (error) {
+      console.error('Error posting data to server:', error);
+  }
+}
+
+
+
 
   // Periodically fetch data from the server
   setInterval(fetchFromServer, 60000); // Fetch every 60 seconds
