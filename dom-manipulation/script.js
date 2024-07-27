@@ -28,25 +28,25 @@ document.addEventListener("DOMContentLoaded", function () {
       quoteDisplay.textContent = `"${quote.text}" - "${quote.category}"`;
     };
    
-     // Function to fetch data from the server
-     function fetchQuotesFromServer() {
-      fetch(SERVER_URL)
-          .then(response => response.json())
-          .then(data => {
-              const serverQuotes = data.map(post => ({ text: post.title, category: "inspiration" })); // Example transformation
-              syncQuotes(serverQuotes);
-          })
-          .catch(error => console.error('Error fetching data from server:', error));
+    async function fetchFromServer() {
+      try {
+          const response = await fetch(SERVER_URL);
+          const data = await response.json();
+          const serverQuotes = data.map(post => ({ text: post.title, category: "inspiration" })); // Example transformation
+          await syncQuotes(serverQuotes);
+      } catch (error) {
+          console.error('Error fetching data from server:', error);
+      }
   }
 
-  // Function to sync local quotes with server quotes
-  function syncQuotes(serverQuotes) {
+  // Async function to sync local quotes with server quotes
+  async function syncQuotes(serverQuotes) {
       // Conflict resolution: Server data takes precedence
-      storedQuotes.forEach(storedQuote => {
-          if (!serverQuotes.some(serverQuote => serverQuote.text === storedQuote.text)) {
-              serverQuotes.push(storedQuote);
-          }
-      });
+      const updatedQuotes = storedQuotes.filter(storedQuote => 
+          !serverQuotes.some(serverQuote => serverQuote.text === storedQuote.text)
+      );
+
+      serverQuotes.push(...updatedQuotes);
 
       localStorage.setItem("quotes", JSON.stringify(serverQuotes));
       showRandomQuote();
@@ -54,9 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Periodically fetch data from the server
   setInterval(fetchFromServer, 60000); // Fetch every 60 seconds
-   
-
-    //function to add a new quote
     
  function addQuote() {
       const newQuoteText = document.getElementById("newQuoteText").value;
